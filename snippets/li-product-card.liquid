@@ -6,7 +6,7 @@
       assign product_url = product.url
     -%}
   
-      <div class="product-card">
+      <div class="product-card" data-product-id="{{ product.id }}">
         <a href="{{ product_url }}" class="product-card__image-wrapper">
           {% if featured_image %}
             <img
