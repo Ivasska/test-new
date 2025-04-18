@@ -1,0 +1,45 @@
+{%- if product and product != empty -%}
+    {%- liquid
+      assign featured_image = product.featured_image
+      assign first_variant = product.variants.first
+      assign available = product.available
+      assign product_url = product.url
+    -%}
+  
+      <div class="product-card" data-product-id="{{ product.id }}">
+        <a href="{{ product_url }}" class="product-card__image-wrapper">
+          {% if featured_image %}
+            <img
+              srcset="
+                {{ featured_image | image_url: width: 375, height: 260, crop: 'center' }} 375w,
+                {{ featured_image | image_url: width: 520, height: 340, crop: 'center' }} 520w
+              "
+              src="{{ featured_image | image_url: width: 375, height: 260, crop: 'center' }}"
+              sizes="(min-width: 990px) 520px, 375px"
+              alt="{{ featured_image.alt | escape }}"
+              class="product-card__image motion-reduce"
+              loading="lazy"
+              width="520"
+              height="340"
+            />
+  
+          {% endif %}
+        </a>
+  
+        <div class="product-card__info">
+          <h3 class="product-card__title">
+            <a href="{{ product_url }}">
+              {{ product.title | escape }}
+            </a>
+          </h3>
+  
+          <form method="post" action="/cart/add" class="product-card__form">
+            <input type="hidden" name="id" value="{{ first_variant.id }}">
+            <button type="submit" class="product-card__button">
+              Add to cart - {{ first_variant.price | money }}
+            </button>
+          </form>
+  
+        </div>
+      </div>
+  {%- endif -%}
