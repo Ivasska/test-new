@@ -1,0 +1,54 @@
+
+{% assign collection_handle = section.settings.featured_collection %}
+{% assign collection = collections[collection_handle] %}
+{% assign collection = collections[section.settings.featured_collection] | default: collections['frontpage'] %}
+
+
+
+{% if collection and collection.products.size > 0 %}
+  <section class="featured-products page-width section-{{ section.id }}-padding">
+
+    {%- if section.settings.title != blank -%}
+        <h2 class="featured-products__title inline-richtext page-width">
+          {{ section.settings.title }}
+        </h2>
+    {%- endif -%}
+    
+    <div class="featured-products__wrapper">
+      {% for product in collection.products %}
+        {% render 'li-product-card', product: product %}
+      {% endfor %}
+    </div>
+  </section>
+{% else %}
+  <p>Колекція порожня або не вибрана.</p>
+{% endif %}
+
+
+
+{% schema %}
+{
+  "name": "My Featured Products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+       "type": "collection",
+        "id": "featured_collection",
+        "label": "Сollection"
+    },   
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "title",
+      "default": "Featured Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "My Featured Products",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
